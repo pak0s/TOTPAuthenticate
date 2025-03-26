@@ -141,7 +141,7 @@ public class UserInterface
                 codeUpdateFuture = null;
 
             }
-            codeUpdateFuture = EXECUTOR_SERVICE.scheduleAtFixedRate(() -> currentCode.setText(String.valueOf(AUTHENTICATOR.getTotpPassword(seed))), 0, 30, TimeUnit.SECONDS);
+            codeUpdateFuture = EXECUTOR_SERVICE.scheduleAtFixedRate(() -> currentCode.setText(String.format("%06d", AUTHENTICATOR.getTotpPassword(seed))), 0, 30, TimeUnit.SECONDS);
         }
 
 
