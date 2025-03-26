@@ -76,12 +76,12 @@ public class MySessionHandlingAction implements SessionHandlingAction
 
     private HttpRequest updateOrAddTokenInHeader(HttpRequest request)
     {
-        return isParameterNamePresentInHeaders(request) ? request.withUpdatedHeader(httpHeader(parameterName, String.valueOf(gAuth.getTotpPassword(secret)))) : request.withAddedHeader(httpHeader(parameterName, String.valueOf(gAuth.getTotpPassword(secret))));
+        return isParameterNamePresentInHeaders(request) ? request.withUpdatedHeader(httpHeader(parameterName, String.format("%06d", gAuth.getTotpPassword(secret)))) : request.withAddedHeader(httpHeader(parameterName, String.format("%06d", gAuth.getTotpPassword(secret))));
     }
 
     private HttpRequest updateOrAddTokenInParameter(HttpRequest request, HttpParameterType parameterType)
     {
-        return isParameterNamePresentInParameters(request, parameterType) ? request.withUpdatedParameters(parameter(parameterName, String.valueOf(gAuth.getTotpPassword(secret)), parameterType)) : request.withAddedParameters(parameter(parameterName, String.valueOf(gAuth.getTotpPassword(secret)), parameterType));
+        return isParameterNamePresentInParameters(request, parameterType) ? request.withUpdatedParameters(parameter(parameterName, String.format("%06d", gAuth.getTotpPassword(secret)), parameterType)) : request.withAddedParameters(parameter(parameterName, String.format("%06d", gAuth.getTotpPassword(secret)), parameterType));
     }
 
     private HttpRequest updateTokenInBody(HttpRequest request)
@@ -93,7 +93,8 @@ public class MySessionHandlingAction implements SessionHandlingAction
         {
             int start = matcher.start(1);
             int end = matcher.end(1);
-            return request.withBody(new StringBuilder(body).replace(start, end, String.valueOf(gAuth.getTotpPassword(secret))).toString());
+            return request.withBody(new StringBuilder(body).replace(start, end, String.format("%06d", gAuth.getTotpPassword(secret))).toString());
+
         }
 
         return request;
